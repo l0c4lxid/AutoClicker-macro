@@ -16,16 +16,9 @@ hidden_imports = [
     'pynput',
     'pynput.keyboard',
     'pynput.mouse',
-    'pynput.keyboard._win32',
-    'pynput.mouse._win32',
-    'pynput.keyboard._xorg',
-    'pynput.mouse._xorg',
-    'pynput.keyboard._uinput',
-    'pynput.mouse._uinput',
     'tkinter',
     'tkinter.ttk',
     'ctypes',
-    'ctypes.wintypes',
     'autoclicker',
     'autoclicker.core',
     'autoclicker.core.engine',
@@ -42,6 +35,11 @@ hidden_imports = [
     'autoclicker.utils.platform',
     'autoclicker.utils.sound',
 ]
+
+if sys.platform.startswith('win'):
+    hidden_imports.extend(['pynput.keyboard._win32', 'pynput.mouse._win32', 'ctypes.wintypes'])
+else:
+    hidden_imports.extend(['pynput.keyboard._xorg', 'pynput.mouse._xorg'])
 
 a = Analysis(
     ['main.py'],
