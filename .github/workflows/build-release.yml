@@ -48,12 +48,12 @@ jobs:
 
       - name: Build Standalone Executable
         run: |
-          python build_app.py
+          python scripts/build_app.py
 
       - name: Package Linux Artifacts
         if: runner.os == 'Linux'
         run: |
-          cp install_linux.sh dist/
+          cp scripts/install_linux.sh dist/
           cp -r assets dist/
           tar -czvf StealthClickerPro-Linux-x64.tar.gz -C dist StealthClickerPro install_linux.sh assets
 

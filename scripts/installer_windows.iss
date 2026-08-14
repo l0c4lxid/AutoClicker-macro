@@ -2,7 +2,7 @@
 #define MyAppName "Stealth Clicker Pro"
 #define MyAppVersion "2.5"
 #define MyAppPublisher "StealthClicker Team"
-#define MyAppURL "https://github.com/username/stealth-clicker-pro"
+#define MyAppURL "https://github.com/l0c4lxid/AutoClicker-macro"
 #define MyAppExeName "StealthClickerPro.exe"
 
 [Setup]
@@ -15,9 +15,9 @@ AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
 DefaultDirName={autopf}\{#MyAppName}
 DisableProgramGroupPage=yes
-LicenseFile=README.md
+LicenseFile=..\README.md
 OutputBaseFilename=StealthClickerPro_Setup
-SetupIconFile=assets\icon.ico
+SetupIconFile=..\assets\icon.ico
 UninstallDisplayIcon={app}\{#MyAppExeName}
 Compression=lzma2/ultra64
 SolidCompression=yes
@@ -30,9 +30,9 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "dist\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
-Source: "assets\icon.ico"; DestDir: "{app}\assets"; Flags: ignoreversion
-Source: "assets\icon.png"; DestDir: "{app}\assets"; Flags: ignoreversion
+Source: "..\dist\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\assets\icon.ico"; DestDir: "{app}\assets"; Flags: ignoreversion
+Source: "..\assets\icon.png"; DestDir: "{app}\assets"; Flags: ignoreversion
 
 [Icons]
 Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFilename: "{app}\assets\icon.ico"

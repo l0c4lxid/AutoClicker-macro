@@ -1,5 +1,6 @@
 @echo off
 title Install Dependensi Python Auto Clicker
+cd /d "%~dp0\.."
 echo ========================================================
 echo   Installing requirements for Python Auto Clicker...
 echo ========================================================

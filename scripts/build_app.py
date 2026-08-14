@@ -19,7 +19,8 @@ def run_cmd(cmd, description):
     print(f"[+] Success: {description}")
 
 def main():
-    project_root = os.path.dirname(os.path.abspath(__file__))
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    project_root = os.path.dirname(script_dir)
     os.chdir(project_root)
 
     print("========================================================")
@@ -27,10 +28,11 @@ def main():
     print("========================================================")
 
     # 1. Install required packages
-    run_cmd([sys.executable, "-m", "pip", "install", "-r", "requirements.txt"], "Checking & Installing Dependencies")
+    req_file = os.path.join(project_root, "requirements.txt")
+    run_cmd([sys.executable, "-m", "pip", "install", "-r", req_file], "Checking & Installing Dependencies")
 
     # 2. Generate Icon Assets
-    assets_script = os.path.join(project_root, "generate_assets.py")
+    assets_script = os.path.join(script_dir, "generate_assets.py")
     if os.path.exists(assets_script):
         run_cmd([sys.executable, assets_script], "Generating Cyberpunk Icon Assets")
 

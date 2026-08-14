@@ -16,7 +16,8 @@ def create_cyberpunk_icon():
         subprocess.check_call([sys.executable, "-m", "pip", "install", "pillow"])
         from PIL import Image, ImageDraw
 
-    assets_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets")
+    project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    assets_dir = os.path.join(project_root, "assets")
     os.makedirs(assets_dir, exist_ok=True)
 
     size = (512, 512)

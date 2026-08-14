@@ -5,7 +5,7 @@ echo ========================================================
 echo   Stealth Clicker Pro - Building Windows Application (.exe)
 echo ========================================================
 echo.
-python build_app.py
+python scripts/build_app.py
 if %ERRORLEVEL% NEQ 0 (
     echo.
     echo [!] Process failed with error code %ERRORLEVEL%

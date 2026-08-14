@@ -1,7 +1,7 @@
 # 🛡️ Stealth Clicker Pro v2.5
 
 [![Python Version](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org/)
-[![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux-brightgreen.svg)](https://github.com/)
+[![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux-brightgreen.svg)](https://github.com/l0c4lxid/AutoClicker-macro)
 [![License](https://img.shields.io/badge/license-MIT-purple.svg)](LICENSE)
 [![GUI Framework](https://img.shields.io/badge/GUI-Tkinter-cyan.svg)](https://docs.python.org/3/library/tkinter.html)
 
@@ -24,83 +24,98 @@
 - ⚡ **Presets & Profile Presets**
   - Pilihan preset kecepatan instan: `50ms` (Fast CPS), `100ms` (Gaming), `500ms` (Anti-Detect Stealth), `1000ms`, `2000ms`.
 - 🐧 **100% Cross-Platform (Windows & Linux)**
-  - Kompatibel penuh di Windows 10/11 dan distro Linux (Ubuntu, Debian, Fedora, Arch Linux).
+  - Kompatibel penuh di Windows 10/11 dan distro Linux (CachyOS, Arch Linux, Ubuntu, Debian, Fedora).
 
 ---
 
-## 📁 Struktur Proyek (Modular Architecture)
+## 📁 Struktur Proyek (Clean Modular Architecture)
 
-Proyek ini disusun secara modular sesuai standar pembuatan aplikasi Python profesional:
+Proyek ini disusun secara rapi dan modular sesuai standar pembuatan aplikasi Python & CI/CD profesional:
 
 ```text
-Apps/
+AutoClicker-macro/
 ├── main.py                     # Entry point utama aplikasi
-├── autoclicker.py              # Backward-compatible wrapper
-├── autoclicker/                # Core Python package
-│   ├── core/                   # Engine & input listener logic
+├── autoclicker.py              # Backward-compatible wrapper entry
+├── requirements.txt            # Dependensi Python aplikasi & build
+├── StealthClickerPro.spec      # Spesifikasi PyInstaller build
+├── run_autoclicker.bat         # Launcher 1-Klik (Windows)
+├── run_autoclicker.sh          # Launcher 1-Klik (Linux)
+├── build_windows.bat           # Builder Executable 1-Klik (Windows)
+├── build_linux.sh              # Builder Executable 1-Klik (Linux)
+├── .gitignore                  # Konfigurasi Git ignore
+├── README.md                   # Dokumentasi Resmi Aplikasi
+│
+├── assets/                     # Branding & Ikon Aplikasi
+│   ├── icon.ico                # Ikon aplikasi format ICO (Windows)
+│   └── icon.png                # Ikon aplikasi format PNG (Linux & App)
+│
+├── autoclicker/                # Core Python Package
+│   ├── core/                   # Engine & Listener logic
 │   │   ├── engine.py           # AutoClicker clicking thread & jitter algorithm
 │   │   └── listeners.py        # Global pynput keyboard & mouse listeners
 │   ├── ui/                     # Tkinter UI Components
 │   │   ├── app.py              # Window manager & page switcher
 │   │   ├── theme.py            # Dark Mode & Light Mode color engine
-│   │   └── pages/              # Tab Halaman UI
-│   │       ├── dashboard.py    # Main Dashboard Page
-│   │       ├── anticheat.py    # Stealth & Anti-Cheat Page
-│   │       ├── presets.py      # Saved Presets Page
-│   │       └── settings.py     # General Settings Page
+│   │   └── pages/              # Halaman UI (Dashboard, AntiCheat, Presets, Settings)
 │   └── utils/                  # Utility helpers
 │       ├── platform.py         # OS detection & Win32 SendInput structures
 │       └── sound.py            # Cross-platform sound beep helper
-├── requirements.txt            # Dependensi Python
-├── run_autoclicker.bat         # Launcher Script (Windows)
-├── run_autoclicker.sh          # Launcher Script (Linux)
-├── .gitignore                  # Git ignore configuration
-└── README.md                   # Dokumentasi Aplikasi
+│
+├── scripts/                    # Script Pembantu Build & Installer
+│   ├── generate_assets.py      # Generator otomatis ikon Cyberpunk
+│   ├── build_app.py            # Builder executable cross-platform
+│   ├── install_linux.sh        # Installer shortcut desktop (.desktop) Linux
+│   ├── installer_windows.iss   # Script Inno Setup installer wizard (.exe)
+│   └── install_requirements.bat# Script otomatis instalasi pip requirements
+│
+└── .github/                    # CI/CD GitHub Actions Automation
+    └── workflows/
+        └── build-release.yml   # Workflow otomatisasi build & release GitHub
 ```
 
 ---
 
 ## 📦 Menjalankan Sebagai Aplikasi Standalone (Tanpa Install Python!)
 
-Aplikasi **Stealth Clicker Pro** kini dapat dikompilasi dan dijalankan secara langsung sebagai aplikasi desktop bawaan (`.exe` untuk Windows & Standalone Binary untuk Linux) tanpa perlu menginstal Python atau dependensi lainnya di komputer target.
+Aplikasi **Stealth Clicker Pro** kini dapat dikompilasi dan dijalankan secara langsung sebagai aplikasi desktop bawaan (`.exe` untuk Windows & Standalone Binary untuk Linux) tanpa perlu menginstal Python di komputer target.
 
-### 1. Membangun Aplikasi Executable (1-Klik Build)
+### 1. Download Langsung dari GitHub Releases
+Buka halaman [GitHub Releases](https://github.com/l0c4lxid/AutoClicker-macro/releases) untuk mengunduh versi siap pakai:
+- 🪟 **`StealthClickerPro-Windows-x64.exe`** (Untuk Windows 10/11)
+- 🐧 **`StealthClickerPro-Linux-x64.tar.gz`** (Untuk CachyOS, Arch, Ubuntu, Fedora)
+
+### 2. Membangun Aplikasi Executable Sendiri (1-Klik Build)
 
 #### Di Windows (`.exe` Standalone):
-Cukup klik ganda file `build_windows.bat` atau jalankan perintah berikut di PowerShell/CMD:
+Cukup klik ganda file `build_windows.bat` atau jalankan di terminal:
 ```powershell
-python build_app.py
+python scripts/build_app.py
 # atau double-click: build_windows.bat
 ```
-Hasil executable akan secara otomatis dibuat di folder `dist/StealthClickerPro.exe`. File `.exe` ini portabel dan dapat langsung dipindahkan serta dijalankan di komputer Windows mana saja!
+Hasil executable akan secara otomatis dibuat di folder `dist/StealthClickerPro.exe`.
 
-#### Di Linux (Native Binary & Desktop Integration):
+#### Di Linux (CachyOS / Arch / Ubuntu):
 Jalankan script pembangun aplikasi berikut di Terminal:
 ```bash
-chmod +x build_linux.sh install_linux.sh
+chmod +x build_linux.sh scripts/install_linux.sh
 ./build_linux.sh
 ```
 Hasil binary executable dibuat di `dist/StealthClickerPro`.
 
-### 2. Memasang ke Application Launcher (Linux `.desktop`)
-Agar aplikasi muncul di menu aplikasi Linux dengan ikon Cyberpunk kustom:
+### 3. Memasang ke Application Launcher Linux (`.desktop`)
+Agar aplikasi muncul di menu aplikasi Linux dengan ikon Cyberpunk:
 ```bash
-./install_linux.sh
+./scripts/install_linux.sh
 ```
-Script akan mendaftarkan aplikasi ke `~/.local/share/applications/` sehingga Anda bisa mencarinya langsung melalui App Menu OS Linux.
 
-### 4. 🤖 Build Otomatis di GitHub Releases (CI/CD Actions)
-Proyek ini dikonfigurasi menggunakan **GitHub Actions** ([build-release.yml](file:///d:/Games/Code/Apps/.github/workflows/build-release.yml)).
-Setiap kali Anda membuat versi baru (*Release Tag*) di GitHub, server GitHub akan otomatis melakukan kompilasi executable cross-platform dan mengunggahnya ke halaman **GitHub Releases**:
-- `StealthClickerPro-Windows-x64.exe`
-- `StealthClickerPro-Linux-x64.tar.gz`
+### 4. Membuat Windows Setup Installer (`.exe` Setup)
+Menggunakan [Inno Setup Compiler](https://jrsoftware.org/isinfo.php):
+1. Buka file `scripts/installer_windows.iss` di Inno Setup.
+2. Klik **Compile** (`Ctrl + F9`).
+3. File installer `StealthClickerPro_Setup.exe` akan siap didistribusikan.
 
-**Cara Memicu Build Release di GitHub:**
-```bash
-git tag v2.5.0
-git push origin v2.5.0
-```
-Atau buka tab **Actions** di repository GitHub Anda lalu klik **Run workflow**.
+### 5. 🤖 Automated Build & GitHub Releases (CI/CD)
+Setiap kali Anda melakukan push commit baru ke branch `main` atau menambahkan release tag (`v*`), GitHub Actions akan secara otomatis mengompilasi file executable Windows & Linux lalu mengunggahnya ke halaman **GitHub Releases**.
 
 ---
 
@@ -111,38 +126,27 @@ Pastikan Anda telah menginstal **Python 3.8** atau versi yang lebih baru.
 
 ### 2. Kloning Repository
 ```bash
-git clone https://github.com/username/stealth-clicker-pro.git
-cd stealth-clicker-pro
+git clone https://github.com/l0c4lxid/AutoClicker-macro.git
+cd AutoClicker-macro
 ```
 
 ### 3. Instalasi Dependensi
 ```bash
 pip install -r requirements.txt
+# atau double-click: scripts/install_requirements.bat
 ```
 
----
-
-## 💻 Cara Menjalankan
-
-### Di Windows:
-Cukup jalankan melalui Terminal atau double-click file batch launcher:
-```powershell
-python main.py
-# atau double click: run_autoclicker.bat
-```
-
-### Di Linux (Ubuntu / Debian / Arch / Fedora):
-```bash
-chmod +x run_autoclicker.sh
-./run_autoclicker.sh
-# atau: python3 main.py
-```
-
-> **Catatan Pengguna Linux:**
-> Jika global hotkey memerlukan akses perangkat input di lingkungan X11/Wayland, pastikan user Anda sudah dimasukkan ke dalam group `input`:
-> ```bash
-> sudo usermod -aG input $USER
-> ```
+### 4. Menjalankan Aplikasi
+- **Di Windows**:
+  ```powershell
+  python main.py
+  # atau double-click: run_autoclicker.bat
+  ```
+- **Di Linux**:
+  ```bash
+  chmod +x run_autoclicker.sh
+  ./run_autoclicker.sh
+  ```
 
 ---
 
@@ -162,6 +166,6 @@ Proyek ini dirilis di bawah lisensi **[MIT License](LICENSE)**. Bebas digunakan,
 
 ---
 
-<p center>
+<p align="center">
 Dibuat dengan ❤️ & Python Tkinter
 </p>

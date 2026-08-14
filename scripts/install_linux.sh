@@ -2,12 +2,13 @@
 # Stealth Clicker Pro - Linux Desktop Launcher Installer
 set -e
 
-cd "$(dirname "$0")"
+SCRIPT_DIR="$(dirname "$0")"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
-BIN_SRC="dist/StealthClickerPro"
+BIN_SRC="$PROJECT_ROOT/dist/StealthClickerPro"
 if [ ! -f "$BIN_SRC" ]; then
     echo "[!] Binary dist/StealthClickerPro not found. Building now..."
-    python3 build_app.py
+    python3 "$SCRIPT_DIR/build_app.py"
 fi
 
 INSTALL_DIR="$HOME/.local/bin"
@@ -16,11 +17,11 @@ ICON_DIR="$HOME/.local/share/icons"
 
 mkdir -p "$INSTALL_DIR" "$APP_DIR" "$ICON_DIR"
 
-cp dist/StealthClickerPro "$INSTALL_DIR/stealthclickerpro"
+cp "$PROJECT_ROOT/dist/StealthClickerPro" "$INSTALL_DIR/stealthclickerpro"
 chmod +x "$INSTALL_DIR/stealthclickerpro"
 
-if [ -f "assets/icon.png" ]; then
-    cp assets/icon.png "$ICON_DIR/stealthclickerpro.png"
+if [ -f "$PROJECT_ROOT/assets/icon.png" ]; then
+    cp "$PROJECT_ROOT/assets/icon.png" "$ICON_DIR/stealthclickerpro.png"
 fi
 
 DESKTOP_FILE="$APP_DIR/stealthclickerpro.desktop"
