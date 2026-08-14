@@ -102,8 +102,20 @@ chmod +x build_linux.sh scripts/install_linux.sh
 ```
 Hasil binary executable dibuat di `dist/StealthClickerPro`.
 
-### 3. Memasang ke Application Launcher Linux (`.desktop`)
-Agar aplikasi muncul di menu aplikasi Linux dengan ikon Cyberpunk:
+### 3. Instalasi di CachyOS / Arch Linux via `yay` / `makepkg` (PKGBUILD)
+Proyek ini dilengkapi dengan file **`PKGBUILD`** standar Arch Linux. Pengguna CachyOS / Arch Linux dapat mengunduh dan memasangnya langsung ke sistem dengan perintah 1-baris:
+
+```bash
+# 1. Kloning repository & install via makepkg / yay
+yay -S --needed git
+git clone https://github.com/l0c4lxid/AutoClicker-macro.git
+cd AutoClicker-macro
+makepkg -si
+```
+Setelah proses `makepkg -si` selesai, perintah `stealthclickerpro` akan terpasang otomatis di `/usr/bin/stealthclickerpro` dan aplikasi muncul di App Menu CachyOS dengan ikon Cyberpunk!
+
+### 4. Memasang ke Application Launcher Linux Manual (`.desktop`)
+Jika ingin memasang launcher desktop tanpa `makepkg`:
 ```bash
 ./scripts/install_linux.sh
 ```
