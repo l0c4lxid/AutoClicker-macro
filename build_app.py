@@ -36,7 +36,27 @@ def main():
 
     # 3. Build Executable with PyInstaller using StealthClickerPro.spec
     spec_file = os.path.join(project_root, "StealthClickerPro.spec")
-    run_cmd([sys.executable, "-m", "PyInstaller", spec_file, "--noconfirm", "--clean"], "Compiling Executable with PyInstaller")
+    if os.path.exists(spec_file):
+        cmd = [sys.executable, "-m", "PyInstaller", spec_file, "--noconfirm", "--clean"]
+    else:
+        cmd = [
+            sys.executable, "-m", "PyInstaller",
+            "--name=StealthClickerPro",
+            "--onefile",
+            "--windowed",
+            "--add-data=assets;assets" if sys.platform.startswith("win") else "--add-data=assets:assets",
+            "--hidden-import=pynput",
+            "--hidden-import=pynput.keyboard._win32",
+            "--hidden-import=pynput.mouse._win32",
+            "--hidden-import=pynput.keyboard._xorg",
+            "--hidden-import=pynput.mouse._xorg",
+            "--hidden-import=tkinter",
+            "--noconfirm", "--clean",
+            "main.py"
+        ]
+        if os.path.exists(os.path.join(project_root, "assets", "icon.ico")) and sys.platform.startswith("win"):
+            cmd.insert(-1, f"--icon={os.path.join(project_root, 'assets', 'icon.ico')}")
+    run_cmd(cmd, "Compiling Executable with PyInstaller")
 
     # 4. Verify Built Executable
     dist_dir = os.path.join(project_root, "dist")
