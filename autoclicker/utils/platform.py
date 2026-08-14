@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import sys
+import os
 import ctypes
 
 IS_WINDOWS = sys.platform.startswith("win")
@@ -56,3 +57,26 @@ def perform_sendinput_click(click_type: str, hold_duration: float):
     time.sleep(hold_duration)
     ctypes.windll.user32.SendInput(1, ctypes.pointer(ii_up), ctypes.sizeof(ii_up))
     return True
+
+def get_asset_path(relative_path: str) -> str:
+    """Gets absolute path to asset, handling PyInstaller bundle path (sys._MEIPASS)."""
+    if hasattr(sys, '_MEIPASS'):
+        base_path = sys._MEIPASS
+    else:
+        base_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+    return os.path.join(base_path, relative_path)
+
+def set_window_icon(root):
+    """Sets window icon for Tkinter root window if icon exists."""
+    import os
+    try:
+        ico_path = get_asset_path(os.path.join("assets", "icon.ico"))
+        png_path = get_asset_path(os.path.join("assets", "icon.png"))
+        if IS_WINDOWS and os.path.exists(ico_path):
+            root.iconbitmap(ico_path)
+        elif os.path.exists(png_path):
+            from tkinter import PhotoImage
+            img = PhotoImage(file=png_path)
+            root.iconphoto(True, img)
+    except Exception as e:
+        pass

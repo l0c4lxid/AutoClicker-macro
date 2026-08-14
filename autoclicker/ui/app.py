@@ -5,7 +5,7 @@ from autoclicker.ui.theme import ThemeManager
 from autoclicker.ui.pages import DashboardPage, AntiCheatPage, PresetsPage, SettingsPage
 from autoclicker.core.engine import AutoClickerEngine
 from autoclicker.core.listeners import GlobalInputListeners
-from autoclicker.utils.platform import IS_WINDOWS, IS_LINUX
+from autoclicker.utils.platform import IS_WINDOWS, IS_LINUX, set_window_icon
 
 class AutoClickerApp:
     def __init__(self, root: tk.Tk):
@@ -13,6 +13,7 @@ class AutoClickerApp:
         self.root.title("Stealth Clicker Pro")
         self.root.geometry("860x780")
         self.root.minsize(800, 700)
+        set_window_icon(self.root)
 
         # Core logic engine
         self.engine = AutoClickerEngine()

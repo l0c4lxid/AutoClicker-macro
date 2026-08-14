@@ -60,7 +60,51 @@ Apps/
 
 ---
 
-## 🚀 Panduan Instalasi & Penggunaan
+## 📦 Menjalankan Sebagai Aplikasi Standalone (Tanpa Install Python!)
+
+Aplikasi **Stealth Clicker Pro** kini dapat dikompilasi dan dijalankan secara langsung sebagai aplikasi desktop bawaan (`.exe` untuk Windows & Standalone Binary untuk Linux) tanpa perlu menginstal Python atau dependensi lainnya di komputer target.
+
+### 1. Membangun Aplikasi Executable (1-Klik Build)
+
+#### Di Windows (`.exe` Standalone):
+Cukup klik ganda file `build_windows.bat` atau jalankan perintah berikut di PowerShell/CMD:
+```powershell
+python build_app.py
+# atau double-click: build_windows.bat
+```
+Hasil executable akan secara otomatis dibuat di folder `dist/StealthClickerPro.exe`. File `.exe` ini portabel dan dapat langsung dipindahkan serta dijalankan di komputer Windows mana saja!
+
+#### Di Linux (Native Binary & Desktop Integration):
+Jalankan script pembangun aplikasi berikut di Terminal:
+```bash
+chmod +x build_linux.sh install_linux.sh
+./build_linux.sh
+```
+Hasil binary executable dibuat di `dist/StealthClickerPro`.
+
+### 2. Memasang ke Application Launcher (Linux `.desktop`)
+Agar aplikasi muncul di menu aplikasi Linux dengan ikon Cyberpunk kustom:
+```bash
+./install_linux.sh
+```
+Script akan mendaftarkan aplikasi ke `~/.local/share/applications/` sehingga Anda bisa mencarinya langsung melalui App Menu OS Linux.
+
+### 4. 🤖 Build Otomatis di GitHub Releases (CI/CD Actions)
+Proyek ini dikonfigurasi menggunakan **GitHub Actions** ([build-release.yml](file:///d:/Games/Code/Apps/.github/workflows/build-release.yml)).
+Setiap kali Anda membuat versi baru (*Release Tag*) di GitHub, server GitHub akan otomatis melakukan kompilasi executable cross-platform dan mengunggahnya ke halaman **GitHub Releases**:
+- `StealthClickerPro-Windows-x64.exe`
+- `StealthClickerPro-Linux-x64.tar.gz`
+
+**Cara Memicu Build Release di GitHub:**
+```bash
+git tag v2.5.0
+git push origin v2.5.0
+```
+Atau buka tab **Actions** di repository GitHub Anda lalu klik **Run workflow**.
+
+---
+
+## 🚀 Panduan Jalur Pengembang (Python Source Code)
 
 ### 1. Prasyarat
 Pastikan Anda telah menginstal **Python 3.8** atau versi yang lebih baru.
