@@ -169,7 +169,7 @@ class DashboardPage(tk.Frame):
                                  fg=colors["text_muted"], bg=colors["card_bg"], width=18, anchor="w")
         self.trig_lbl.grid(row=0, column=0, sticky="w", pady=4)
 
-        trig_options = ["Mouse Side (X1/X2)", "Middle Mouse", "F6", "F8", "F9", "F10", "F11", "Space"]
+        trig_options = ["F", "Space", "F6", "F8", "F9", "F10", "F11", "Mouse Side (X1/X2)", "Middle Mouse"]
         self.trig_menu = ttk.OptionMenu(self.trig_grid, self.app.hotkey_var, self.app.hotkey_var.get(), *trig_options, style="Custom.TMenubutton")
         self.trig_menu.grid(row=0, column=1, sticky="w", pady=4)
 
@@ -182,13 +182,37 @@ class DashboardPage(tk.Frame):
         self.em_menu = ttk.OptionMenu(self.trig_grid, self.app.emergency_key_var, self.app.emergency_key_var.get(), *em_options, style="Custom.TMenubutton")
         self.em_menu.grid(row=1, column=1, sticky="w", pady=4)
 
-        # Row 3: Click Type
-        self.click_lbl = tk.Label(self.trig_grid, text="🖱  Click Type:", font=("Segoe UI", 9, "bold"),
+        # Row 3: Action Category Mode (Mouse vs Keyboard)
+        self.act_lbl = tk.Label(self.trig_grid, text="⚡  Action Type:", font=("Segoe UI", 9, "bold"),
+                                fg=colors["text_muted"], bg=colors["card_bg"], width=18, anchor="w")
+        self.act_lbl.grid(row=2, column=0, sticky="w", pady=4)
+
+        self.act_mode_frame = tk.Frame(self.trig_grid, bg=colors["card_bg"])
+        self.act_mode_frame.grid(row=2, column=1, sticky="w", pady=4)
+
+        self.mouse_mode_rb = tk.Radiobutton(
+            self.act_mode_frame, text="Mouse Click", value="Mouse",
+            variable=self.app.action_mode_var, font=("Segoe UI", 9, "bold"),
+            fg=colors["text_main"], bg=colors["card_bg"], activebackground=colors["card_bg"],
+            activeforeground=colors["primary_container"], selectcolor=colors["surface_dim"],
+            cursor="hand2", command=self._on_action_mode_toggle
+        )
+        self.mouse_mode_rb.pack(side="left", padx=(0, 12))
+
+        self.kb_mode_rb = tk.Radiobutton(
+            self.act_mode_frame, text="Keyboard Key", value="Keyboard",
+            variable=self.app.action_mode_var, font=("Segoe UI", 9, "bold"),
+            fg=colors["text_main"], bg=colors["card_bg"], activebackground=colors["card_bg"],
+            activeforeground=colors["primary_container"], selectcolor=colors["surface_dim"],
+            cursor="hand2", command=self._on_action_mode_toggle
+        )
+        self.kb_mode_rb.pack(side="left", padx=(0, 12))
+
+        # Row 4: Mouse Click Options
+        self.click_lbl = tk.Label(self.trig_grid, text="🖱  Mouse Button:", font=("Segoe UI", 9, "bold"),
                                   fg=colors["text_muted"], bg=colors["card_bg"], width=18, anchor="w")
-        self.click_lbl.grid(row=2, column=0, sticky="w", pady=4)
 
         self.click_radio_frame = tk.Frame(self.trig_grid, bg=colors["card_bg"])
-        self.click_radio_frame.grid(row=2, column=1, sticky="w", pady=4)
 
         self.click_rbs = []
         for c_type in ["Left", "Right", "Middle"]:
@@ -207,6 +231,44 @@ class DashboardPage(tk.Frame):
             )
             rb.pack(side="left", padx=(0, 12))
             self.click_rbs.append(rb)
+
+        # Row 5: Keyboard Key Options
+        self.kb_lbl = tk.Label(self.trig_grid, text="⌨  Key to Press:", font=("Segoe UI", 9, "bold"),
+                               fg=colors["text_muted"], bg=colors["card_bg"], width=18, anchor="w")
+
+        self.kb_opts_frame = tk.Frame(self.trig_grid, bg=colors["card_bg"])
+
+        self.kb_preset_row = tk.Frame(self.kb_opts_frame, bg=colors["card_bg"])
+        self.kb_preset_row.pack(anchor="w", pady=(0, 4))
+
+        self.kb_preset_btns = []
+        kb_presets = ["F", "Space", "Enter", "Tab", "E", "Q", "W", "A", "S", "D"]
+        for kp in kb_presets:
+            btn = tk.Button(
+                self.kb_preset_row, text=kp, font=("Consolas", 8, "bold"),
+                bg=colors["btn_default_bg"], fg=colors["primary"], bd=1, relief="solid",
+                highlightbackground=colors["card_border"], cursor="hand2",
+                command=lambda k=kp: self.app.custom_key_var.set(k)
+            )
+            btn.pack(side="left", padx=(0, 4), ipady=1, ipadx=5)
+            self.kb_preset_btns.append(btn)
+
+        self.custom_key_row = tk.Frame(self.kb_opts_frame, bg=colors["card_bg"])
+        self.custom_key_row.pack(anchor="w", pady=(2, 0))
+
+        self.custom_key_lbl = tk.Label(self.custom_key_row, text="Custom Key:", font=("Segoe UI", 8),
+                                       fg=colors["text_muted"], bg=colors["card_bg"])
+        self.custom_key_lbl.pack(side="left", padx=(0, 6))
+
+        self.custom_key_entry = tk.Entry(
+            self.custom_key_row, textvariable=self.app.custom_key_var,
+            font=("Consolas", 10, "bold"), bg=colors["entry_bg"], fg=colors["primary_container"],
+            insertbackground=colors["primary"], bd=1, relief="solid", highlightbackground=colors["card_border"],
+            width=8, justify="center"
+        )
+        self.custom_key_entry.pack(side="left")
+
+        self._on_action_mode_toggle()
 
         # D. ANTI-CHEAT / STEALTH QUICK SUMMARY PANEL
         self.stealth_card = tk.Frame(
@@ -324,6 +386,19 @@ class DashboardPage(tk.Frame):
         )
         self.emergency_stop_btn.pack(fill="x", ipady=6)
 
+    def _on_action_mode_toggle(self):
+        mode = self.app.action_mode_var.get()
+        if mode == "Mouse":
+            self.kb_lbl.grid_forget()
+            self.kb_opts_frame.grid_forget()
+            self.click_lbl.grid(row=3, column=0, sticky="w", pady=4)
+            self.click_radio_frame.grid(row=3, column=1, sticky="w", pady=4)
+        else:
+            self.click_lbl.grid_forget()
+            self.click_radio_frame.grid_forget()
+            self.kb_lbl.grid(row=3, column=0, sticky="w", pady=4)
+            self.kb_opts_frame.grid(row=3, column=1, sticky="w", pady=4)
+
     def apply_theme(self):
         colors = self.app.theme.colors
         self.config(bg=colors["bg"])
@@ -364,6 +439,16 @@ class DashboardPage(tk.Frame):
         self.trig_grid.config(bg=colors["card_bg"])
         self.trig_lbl.config(fg=colors["text_muted"], bg=colors["card_bg"])
         self.em_lbl.config(fg=colors["error_red"], bg=colors["card_bg"])
+        self.act_lbl.config(fg=colors["text_muted"], bg=colors["card_bg"])
+        self.act_mode_frame.config(bg=colors["card_bg"])
+        self.mouse_mode_rb.config(
+            fg=colors["text_main"], bg=colors["card_bg"], activebackground=colors["card_bg"],
+            activeforeground=colors["primary_container"], selectcolor=colors["surface_dim"]
+        )
+        self.kb_mode_rb.config(
+            fg=colors["text_main"], bg=colors["card_bg"], activebackground=colors["card_bg"],
+            activeforeground=colors["primary_container"], selectcolor=colors["surface_dim"]
+        )
         self.click_lbl.config(fg=colors["text_muted"], bg=colors["card_bg"])
         self.click_radio_frame.config(bg=colors["card_bg"])
 
@@ -375,6 +460,21 @@ class DashboardPage(tk.Frame):
                 activeforeground=colors["primary_container"],
                 selectcolor=colors["surface_dim"]
             )
+
+        self.kb_lbl.config(fg=colors["text_muted"], bg=colors["card_bg"])
+        self.kb_opts_frame.config(bg=colors["card_bg"])
+        self.kb_preset_row.config(bg=colors["card_bg"])
+        for btn in getattr(self, "kb_preset_btns", []):
+            btn.config(
+                bg=colors["btn_default_bg"], fg=colors["primary"],
+                highlightbackground=colors["card_border"]
+            )
+        self.custom_key_row.config(bg=colors["card_bg"])
+        self.custom_key_lbl.config(fg=colors["text_muted"], bg=colors["card_bg"])
+        self.custom_key_entry.config(
+            bg=colors["entry_bg"], fg=colors["primary_container"],
+            insertbackground=colors["primary"], highlightbackground=colors["card_border"]
+        )
 
         self.update_preset_button_styles(self.app.interval_ms_var.get())
 

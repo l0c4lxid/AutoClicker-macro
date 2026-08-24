@@ -3,12 +3,14 @@ import time
 import random
 import threading
 from pynput.mouse import Button as MouseButton, Controller as MouseController
-from autoclicker.utils.platform import IS_WINDOWS, perform_sendinput_click
+from pynput.keyboard import Key, Controller as KeyboardController
+from autoclicker.utils.platform import IS_WINDOWS, perform_sendinput_click, perform_sendinput_key
 from autoclicker.utils.sound import play_beep
 
 class AutoClickerEngine:
     def __init__(self):
         self.mouse = MouseController()
+        self.keyboard = KeyboardController()
         self.running = False
         self.click_count = 0
         self.click_thread = None
@@ -101,14 +103,46 @@ class AutoClickerEngine:
                 actual_delay = base_delay_sec
                 hold_duration = 0.020
 
-            # 2. Click Execution (Windows SendInput vs pynput)
-            if self.sendinput_mode and IS_WINDOWS:
-                perform_sendinput_click(self.click_type, hold_duration)
+            # 2. Execution (Mouse vs Keyboard Key)
+            c_type = self.click_type.strip()
+            if c_type in btn_map:
+                # Mouse Click
+                if self.sendinput_mode and IS_WINDOWS:
+                    perform_sendinput_click(c_type, hold_duration)
+                else:
+                    selected_btn = btn_map.get(c_type, MouseButton.left)
+                    self.mouse.press(selected_btn)
+                    time.sleep(hold_duration)
+                    self.mouse.release(selected_btn)
             else:
-                selected_btn = btn_map.get(self.click_type, MouseButton.left)
-                self.mouse.press(selected_btn)
-                time.sleep(hold_duration)
-                self.mouse.release(selected_btn)
+                # Keyboard Key Press
+                target_key = c_type.replace("Key:", "").strip()
+                sendinput_done = False
+                if self.sendinput_mode and IS_WINDOWS:
+                    sendinput_done = perform_sendinput_key(target_key, hold_duration)
+
+                if not sendinput_done:
+                    key_clean = target_key.lower()
+                    key_map = {
+                        "space": Key.space, "spasi": Key.space, "enter": Key.enter,
+                        "tab": Key.tab, "shift": Key.shift, "ctrl": Key.ctrl,
+                        "alt": Key.alt, "backspace": Key.backspace, "esc": Key.esc
+                    }
+                    if key_clean in key_map:
+                        key_obj = key_map[key_clean]
+                    elif key_clean.startswith("f") and key_clean[1:].isdigit():
+                        key_obj = getattr(Key, key_clean, key_clean)
+                    elif len(key_clean) == 1:
+                        key_obj = key_clean
+                    else:
+                        key_obj = key_clean
+
+                    try:
+                        self.keyboard.press(key_obj)
+                        time.sleep(hold_duration)
+                        self.keyboard.release(key_obj)
+                    except Exception as e:
+                        print(f"[Warning] Keyboard press execution exception: {e}")
 
             self.click_count += 1
 
@@ -121,3 +155,4 @@ class AutoClickerEngine:
             while self.running and elapsed < actual_delay:
                 time.sleep(step)
                 elapsed += step
+

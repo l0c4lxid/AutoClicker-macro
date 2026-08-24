@@ -34,6 +34,7 @@ class GlobalInputListeners:
 
             # 2. Trigger Hotkey Check
             hk_map = {
+                "F": "f",
                 "F6": Key.f6,
                 "F8": Key.f8,
                 "F9": Key.f9,
@@ -42,8 +43,22 @@ class GlobalInputListeners:
                 "Space": Key.space
             }
 
-            if target_hk in hk_map and key == hk_map[target_hk]:
-                self.on_toggle_func()
+            if target_hk in hk_map:
+                expected = hk_map[target_hk]
+                if expected == "f":
+                    if hasattr(key, 'char') and key.char and key.char.lower() == 'f':
+                        self.on_toggle_func()
+                    elif str(key).strip("'").lower() == 'f':
+                        self.on_toggle_func()
+                elif key == expected:
+                    self.on_toggle_func()
+            else:
+                # Custom character or function key fallback
+                t_lower = target_hk.strip().lower()
+                if hasattr(key, 'char') and key.char and key.char.lower() == t_lower:
+                    self.on_toggle_func()
+                elif str(key).strip("'").lower() == t_lower:
+                    self.on_toggle_func()
 
         def on_mouse_click(x, y, button, pressed):
             target_hk = self.get_hotkey_func()

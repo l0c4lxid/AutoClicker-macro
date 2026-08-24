@@ -1,27 +1,29 @@
-# 🛡️ Stealth Clicker Pro v2.5
+# 🛡️ Stealth Clicker Pro v3.0
 
 [![Python Version](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org/)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux-brightgreen.svg)](https://github.com/l0c4lxid/AutoClicker-macro)
 [![License](https://img.shields.io/badge/license-MIT-purple.svg)](LICENSE)
 [![GUI Framework](https://img.shields.io/badge/GUI-Tkinter-cyan.svg)](https://docs.python.org/3/library/tkinter.html)
 
-**Stealth Clicker Pro** adalah aplikasi Auto Clicker modern, ringan, dan *cross-platform* (Windows & Linux) yang dirancang dengan antarmuka **Cyberpunk Dark Mode & Soft Light Mode**, dilengkapi fitur **Anti-Cheat Stealth Evasion** (*Human Mode Jitter* ±8% & *Windows SendInput Low-Level API*).
+**Stealth Clicker Pro v3.0** adalah aplikasi Auto Clicker & Keyboard Key Presser modern, ringan, dan *cross-platform* (Windows & Linux) yang dirancang dengan antarmuka **Cyberpunk Dark Mode & Soft Light Mode**, dilengkapi fitur **Anti-Cheat Stealth Evasion** (*Human Mode Jitter* ±8% & *Windows SendInput Low-Level API*).
 
 ---
 
-## ✨ Fitur Utama
+## ✨ Fitur Utama v3.0
 
+- ⌨️ **Keyboard Key Auto-Press & Mouse Click Simulation**
+  - Mendukung simulasi penekanan tombol mouse (**Left, Right, Middle**) serta tombol keyboard (**F, Space, Enter, Tab, E, Q, W, A, S, D, atau Custom Key/Font**).
+- 🎮 **Macro Start Key "F" & Global Hotkey Customization**
+  - Mengontrol Start/Stop menggunakan tombol macro default **F** atau pilihan hotkey keyboard (`Space`, `F6`, `F8`, `F9`, `F10`, `F11`) dan mouse macro (`Mouse Side X1/X2`, `Middle Mouse`).
 - 🎨 **Dual Theme System (Dark Mode & Light Mode)**
   - Tampilan **Cyberpunk Dark Mode** (Neon Cyan & Obsidian Black) dan **Soft Light Mode** (Sky Blue & Crisp Slate) yang dapat diubah secara *real-time*.
 - 🛡️ **Anti-Cheat & Stealth Evasion**
   - **Human Mode Jitter**: Mengacak jeda klik sebesar ±8% dan durasi penekanan (25-50ms) untuk meniru kebiasaan manusia & menghindari pembacaan pola bot.
   - **Low-Level Windows SendInput API**: Menggunakan Win32 DirectInput driver injection untuk melewati deteksi anti-cheat game.
   - **Window Title Disguise**: Menyamarkan judul jendela aplikasi di Taskbar (*Task Manager, Calculator, Notepad, Windows Settings*) untuk menghindari pembacaan nama proses telemetry.
-- ⌨️ **Global Hotkey & Mouse Macro Support**
-  - Mengontrol Start/Stop menggunakan tombol khusus keyboard (`F6`, `F8`, `F9`, `F10`, `F11`, `Space`) maupun tombol macro mouse (`Mouse Side X1/X2`, `Middle Mouse`).
 - 🚨 **Emergency Panic Break [ ESC ]**
   - Menghentikan seluruh ikatan *clicking thread* seketika hanya dengan menekan `[ ESC ]` (atau `F12` / `Pause Break`).
-- ⚡ **Presets & Profile Presets**
+- ⚡ **Presets & Speed Control**
   - Pilihan preset kecepatan instan: `50ms` (Fast CPS), `100ms` (Gaming), `500ms` (Anti-Detect Stealth), `1000ms`, `2000ms`.
 - 🐧 **100% Cross-Platform (Windows & Linux)**
   - Kompatibel penuh di Windows 10/11 dan distro Linux (CachyOS, Arch Linux, Ubuntu, Debian, Fedora).

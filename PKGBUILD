@@ -1,6 +1,6 @@
 # Maintainer: l0c4lxid <syaidxandhika@gmail.com>
 pkgname=stealth-clicker-pro-git
-pkgver=2.5.0
+pkgver=3.0.0
 pkgrel=1
 pkgdesc="Modern Cyberpunk Cross-Platform Auto Clicker with Anti-Cheat Evasion"
 arch=('x86_64')
@@ -15,7 +15,7 @@ sha256sums=('SKIP')
 
 pkgver() {
   cd "$srcdir/AutoClicker-macro"
-  printf "2.5.0.r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+  printf "3.0.0.r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
 }
 
 build() {

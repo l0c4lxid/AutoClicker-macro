@@ -22,8 +22,10 @@ class AutoClickerApp:
 
         # Settings variables
         self.interval_ms_var = tk.StringVar(value="500")
+        self.action_mode_var = tk.StringVar(value="Mouse")  # "Mouse" or "Keyboard"
         self.click_type_var = tk.StringVar(value="Left")
-        self.hotkey_var = tk.StringVar(value="Mouse Side (X1/X2)")
+        self.custom_key_var = tk.StringVar(value="f")
+        self.hotkey_var = tk.StringVar(value="F")
         self.emergency_key_var = tk.StringVar(value="ESC")
         self.sound_enabled_var = tk.BooleanVar(value=True)
 
@@ -171,7 +173,7 @@ class AutoClickerApp:
         os_name = "Windows" if IS_WINDOWS else ("Linux" if IS_LINUX else "Cross-Platform")
         self.version_lbl = tk.Label(
             self.sidebar_footer,
-            text=f"v2.5 Pro Modular\nEngine: {os_name} Native",
+            text=f"v3.0 Pro Modular\nEngine: {os_name} Native",
             font=("Segoe UI", 8),
             fg=colors["text_muted"],
             bg=colors["surface_dim"],
@@ -270,6 +272,14 @@ class AutoClickerApp:
                 else:
                     dash.main_action_btn.config(text=f"⏸  STOP AUTO CLICKER ({hk})")
 
+    def get_effective_click_type(self) -> str:
+        mode = self.action_mode_var.get()
+        if mode == "Mouse":
+            return self.click_type_var.get()
+        else:
+            cust = self.custom_key_var.get().strip()
+            return cust if cust else "f"
+
     def toggle_clicking(self):
         try:
             interval = float(self.interval_ms_var.get())
@@ -279,9 +289,11 @@ class AutoClickerApp:
             messagebox.showerror("Invalid Input", "Please enter a valid numeric interval in ms (e.g. 500).")
             return
 
+        effective_click_type = self.get_effective_click_type()
+
         self.engine.toggle(
             interval_ms=interval,
-            click_type=self.click_type_var.get(),
+            click_type=effective_click_type,
             human_mode=self.human_mode_var.get(),
             sendinput_mode=self.sendinput_mode_var.get(),
             sound_enabled=self.sound_enabled_var.get()
