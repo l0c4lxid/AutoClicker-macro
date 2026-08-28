@@ -1,16 +1,18 @@
-# 🛡️ Stealth Clicker Pro v3.0
+# 🛡️ Stealth Clicker Pro v3.1.0
 
 [![Python Version](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org/)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux-brightgreen.svg)](https://github.com/l0c4lxid/AutoClicker-macro)
 [![License](https://img.shields.io/badge/license-MIT-purple.svg)](LICENSE)
 [![GUI Framework](https://img.shields.io/badge/GUI-Tkinter-cyan.svg)](https://docs.python.org/3/library/tkinter.html)
 
-**Stealth Clicker Pro v3.0** adalah aplikasi Auto Clicker & Keyboard Key Presser modern, ringan, dan *cross-platform* (Windows & Linux) yang dirancang dengan antarmuka **Cyberpunk Dark Mode & Soft Light Mode**, dilengkapi fitur **Anti-Cheat Stealth Evasion** (*Human Mode Jitter* ±8% & *Windows SendInput Low-Level API*).
+**Stealth Clicker Pro v3.1.0** adalah aplikasi Auto Clicker & Keyboard Key Presser modern, ringan, dan *cross-platform* (Windows & Linux) yang dirancang dengan antarmuka **Cyberpunk Dark Mode & Soft Light Mode**, dilengkapi fitur **Anti-Cheat Stealth Evasion** (*Human Mode Jitter* ±8% & *Windows SendInput Low-Level API*), serta **Penyimpanan Pengaturan Otomatis**.
 
 ---
 
-## ✨ Fitur Utama v3.0
+## ✨ Fitur Utama v3.1.0
 
+- 💾 **Automatic Settings Persistence (v3.1.0)**
+  - Menyimpan seluruh preferensi (interval ms, trigger hotkey, emergency key, mode aksi mouse/keyboard, anti-cheat options, audio beep, serta tema) secara otomatis ke file konfigurasi (`.stealth_clicker_config.json`) sehingga tersimpan saat aplikasi ditutup dan dibuka kembali.
 - ⌨️ **Keyboard Key Auto-Press & Mouse Click Simulation**
   - Mendukung simulasi penekanan tombol mouse (**Left, Right, Middle**) serta tombol keyboard (**F, Space, Enter, Tab, E, Q, W, A, S, D, atau Custom Key/Font**).
 - 🎮 **Macro Start Key "F" & Global Hotkey Customization**

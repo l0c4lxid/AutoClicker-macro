@@ -6,6 +6,7 @@ from autoclicker.ui.pages import DashboardPage, AntiCheatPage, PresetsPage, Sett
 from autoclicker.core.engine import AutoClickerEngine
 from autoclicker.core.listeners import GlobalInputListeners
 from autoclicker.utils.platform import IS_WINDOWS, IS_LINUX, set_window_icon
+from autoclicker.utils.config import ConfigManager
 
 class AutoClickerApp:
     def __init__(self, root: tk.Tk):
@@ -15,37 +16,59 @@ class AutoClickerApp:
         self.root.minsize(800, 700)
         set_window_icon(self.root)
 
+        # Load persisted settings
+        self.saved_config = ConfigManager.load_config()
+
         # Core logic engine
         self.engine = AutoClickerEngine()
         self.engine.on_count_update = self._on_count_update
         self.engine.on_state_change = self._on_state_change
 
         # Settings variables
-        self.interval_ms_var = tk.StringVar(value="500")
-        self.action_mode_var = tk.StringVar(value="Mouse")  # "Mouse" or "Keyboard"
-        self.click_type_var = tk.StringVar(value="Left")
-        self.custom_key_var = tk.StringVar(value="f")
-        self.hotkey_var = tk.StringVar(value="F")
-        self.emergency_key_var = tk.StringVar(value="ESC")
-        self.sound_enabled_var = tk.BooleanVar(value=True)
+        self.interval_ms_var = tk.StringVar(value=str(self.saved_config.get("interval_ms", "500")))
+        self.action_mode_var = tk.StringVar(value=str(self.saved_config.get("action_mode", "Mouse")))
+        self.click_type_var = tk.StringVar(value=str(self.saved_config.get("click_type", "Left")))
+        self.custom_key_var = tk.StringVar(value=str(self.saved_config.get("custom_key", "f")))
+        self.hotkey_var = tk.StringVar(value=str(self.saved_config.get("hotkey", "F")))
+        self.emergency_key_var = tk.StringVar(value=str(self.saved_config.get("emergency_key", "ESC")))
+        self.sound_enabled_var = tk.BooleanVar(value=bool(self.saved_config.get("sound_enabled", True)))
 
         # Stealth & Anti-Cheat variables
-        self.human_mode_var = tk.BooleanVar(value=True)
-        self.sendinput_mode_var = tk.BooleanVar(value=True)
-        self.disguise_title_var = tk.StringVar(value="Normal (Auto Clicker)")
+        self.human_mode_var = tk.BooleanVar(value=bool(self.saved_config.get("human_mode", True)))
+        self.sendinput_mode_var = tk.BooleanVar(value=bool(self.saved_config.get("sendinput_mode", True)))
+        self.disguise_title_var = tk.StringVar(value=str(self.saved_config.get("disguise_title", "Normal (Auto Clicker)")))
 
         # Theme system
-        self.theme = ThemeManager(is_dark_mode=True)
+        self.theme = ThemeManager(is_dark_mode=bool(self.saved_config.get("is_dark_mode", True)))
 
         # Build GUI
         self.root.configure(bg=self.theme.colors["bg"])
         self._setup_custom_styles()
         self._create_widgets()
 
+        # Initial window disguise apply
+        self._apply_window_disguise()
+
         # Traces & Handlers (set up after widgets & pages initialization)
         self.disguise_title_var.trace_add("write", self._apply_window_disguise)
         self.hotkey_var.trace_add("write", self._update_button_text)
         self.interval_ms_var.trace_add("write", self._on_interval_change)
+
+        # Auto-save settings on variable change
+        self._setting_vars = [
+            self.interval_ms_var,
+            self.action_mode_var,
+            self.click_type_var,
+            self.custom_key_var,
+            self.hotkey_var,
+            self.emergency_key_var,
+            self.sound_enabled_var,
+            self.human_mode_var,
+            self.sendinput_mode_var,
+            self.disguise_title_var,
+        ]
+        for var in self._setting_vars:
+            var.trace_add("write", lambda *args: self.save_current_settings())
 
         # Global input listeners
         self.listeners = GlobalInputListeners(
@@ -173,7 +196,7 @@ class AutoClickerApp:
         os_name = "Windows" if IS_WINDOWS else ("Linux" if IS_LINUX else "Cross-Platform")
         self.version_lbl = tk.Label(
             self.sidebar_footer,
-            text=f"v3.0 Pro Modular\nEngine: {os_name} Native",
+            text=f"v3.1.0 Pro Modular\nEngine: {os_name} Native",
             font=("Segoe UI", 8),
             fg=colors["text_muted"],
             bg=colors["surface_dim"],
@@ -210,9 +233,26 @@ class AutoClickerApp:
             else:
                 page_frame.pack_forget()
 
+    def save_current_settings(self):
+        config_data = {
+            "interval_ms": self.interval_ms_var.get(),
+            "action_mode": self.action_mode_var.get(),
+            "click_type": self.click_type_var.get(),
+            "custom_key": self.custom_key_var.get(),
+            "hotkey": self.hotkey_var.get(),
+            "emergency_key": self.emergency_key_var.get(),
+            "sound_enabled": self.sound_enabled_var.get(),
+            "human_mode": self.human_mode_var.get(),
+            "sendinput_mode": self.sendinput_mode_var.get(),
+            "disguise_title": self.disguise_title_var.get(),
+            "is_dark_mode": self.theme.is_dark_mode,
+        }
+        ConfigManager.save_config(config_data)
+
     def toggle_theme(self):
         self.theme.toggle()
         self._apply_theme()
+        self.save_current_settings()
 
     def _apply_theme(self):
         colors = self.theme.colors
@@ -355,6 +395,7 @@ class AutoClickerApp:
         self.root.after(0, update_ui)
 
     def _on_close(self):
+        self.save_current_settings()
         self.engine.stop()
         if hasattr(self, "listeners"):
             self.listeners.stop()
