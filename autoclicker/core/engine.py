@@ -4,7 +4,7 @@ import random
 import threading
 from pynput.mouse import Button as MouseButton, Controller as MouseController
 from pynput.keyboard import Key, Controller as KeyboardController
-from autoclicker.utils.platform import IS_WINDOWS, IS_LINUX, perform_sendinput_click, perform_sendinput_key, perform_wayland_click
+from autoclicker.utils.sysinfo import IS_WINDOWS, IS_LINUX, perform_sendinput_click, perform_sendinput_key, perform_wayland_click
 from autoclicker.utils.sound import play_beep
 
 class AutoClickerEngine:

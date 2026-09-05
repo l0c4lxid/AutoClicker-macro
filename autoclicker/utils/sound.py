@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import sys
 import threading
-from autoclicker.utils.platform import IS_WINDOWS
+from autoclicker.utils.sysinfo import IS_WINDOWS
 
 def play_beep(freq: int, duration_ms: int, enabled: bool = True):
     """Cross-platform audio beep handler (Windows winsound / Linux bell)."""

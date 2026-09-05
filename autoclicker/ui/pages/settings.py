@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import tkinter as tk
-from autoclicker.utils.platform import IS_WINDOWS, IS_LINUX
+from autoclicker.utils.sysinfo import IS_WINDOWS, IS_LINUX
 
 class SettingsPage(tk.Frame):
     def __init__(self, parent, app):

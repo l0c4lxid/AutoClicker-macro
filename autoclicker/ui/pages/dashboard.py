@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import tkinter as tk
 from tkinter import ttk
-from autoclicker.utils.platform import IS_WINDOWS
+from autoclicker.utils.sysinfo import IS_WINDOWS
 
 class DashboardPage(tk.Frame):
     def __init__(self, parent, app):

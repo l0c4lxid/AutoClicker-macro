@@ -5,7 +5,7 @@ from autoclicker.ui.theme import ThemeManager
 from autoclicker.ui.pages import DashboardPage, AntiCheatPage, PresetsPage, SettingsPage
 from autoclicker.core.engine import AutoClickerEngine
 from autoclicker.core.listeners import GlobalInputListeners
-from autoclicker.utils.platform import IS_WINDOWS, IS_LINUX, set_window_icon
+from autoclicker.utils.sysinfo import IS_WINDOWS, IS_LINUX, set_window_icon
 from autoclicker.utils.config import ConfigManager
 
 class AutoClickerApp:
