@@ -6,6 +6,8 @@ import subprocess
 
 IS_WINDOWS = sys.platform.startswith("win")
 IS_LINUX = sys.platform.startswith("linux")
+
+if IS_WINDOWS:
     from ctypes import wintypes
 
     INPUT_MOUSE = 0

@@ -13,7 +13,7 @@ class GlobalInputListeners:
         self.mouse_listener = None
 
     def start(self):
-def on_key_press(key):
+        def on_key_press(key):
             target_hk = self.get_hotkey_func()
             break_hk = self.get_emergency_key_func()
 
