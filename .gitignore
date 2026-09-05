@@ -40,6 +40,13 @@ env/
 *.swp
 *.swo
 
+# Arch / Makepkg build artifacts
+pkg/
+src/
+*.pkg.tar.zst
+*.pkg.tar.xz
+*.pkg.tar.gz
+
 # OS files
 .DS_Store
 Thumbs.db
