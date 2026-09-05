@@ -196,7 +196,7 @@ class AutoClickerApp:
         os_name = "Windows" if IS_WINDOWS else ("Linux" if IS_LINUX else "Cross-Platform")
         self.version_lbl = tk.Label(
             self.sidebar_footer,
-            text=f"v3.1.0 Pro Modular\nEngine: {os_name} Native",
+            text=f"v3.2.0 Pro Modular\nEngine: {os_name} Native",
             font=("Segoe UI", 8),
             fg=colors["text_muted"],
             bg=colors["surface_dim"],

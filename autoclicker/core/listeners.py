@@ -13,7 +13,7 @@ class GlobalInputListeners:
         self.mouse_listener = None
 
     def start(self):
-        def on_key_press(key):
+def on_key_press(key):
             target_hk = self.get_hotkey_func()
             break_hk = self.get_emergency_key_func()
 
@@ -63,7 +63,8 @@ class GlobalInputListeners:
         def on_mouse_click(x, y, button, pressed):
             target_hk = self.get_hotkey_func()
             if pressed and target_hk == "Mouse Side (X1/X2)":
-                if button in (MouseButton.x1, MouseButton.x2):
+                btn_name = getattr(button, 'name', '') or str(button)
+                if btn_name in ('x1', 'x2', 'button8', 'button9') or getattr(button, 'value', None) in (8, 9):
                     self.on_toggle_func()
             elif pressed and target_hk == "Middle Mouse":
                 if button == MouseButton.middle:

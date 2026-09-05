@@ -29,7 +29,7 @@ class SettingsPage(tk.Frame):
         platform_str = "Windows (DirectInput SendInput API)" if IS_WINDOWS else ("Linux (X11/pynput Engine)" if IS_LINUX else "macOS / Generic Unix")
 
         info = (
-            f"• Stealth Clicker Pro v3.1.0 Cross-Platform Edition\n"
+            f"• Stealth Clicker Pro v3.2.0 Cross-Platform Edition\n"
             f"• Operating System Detected: {platform_str}\n"
             f"• Hotkey Listeners powered by pynput\n"
             f"• Emergency Break Key: Immediate thread interrupt\n\n"

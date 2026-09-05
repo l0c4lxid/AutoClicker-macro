@@ -4,7 +4,7 @@ import random
 import threading
 from pynput.mouse import Button as MouseButton, Controller as MouseController
 from pynput.keyboard import Key, Controller as KeyboardController
-from autoclicker.utils.platform import IS_WINDOWS, perform_sendinput_click, perform_sendinput_key
+from autoclicker.utils.platform import IS_WINDOWS, IS_LINUX, perform_sendinput_click, perform_sendinput_key, perform_wayland_click
 from autoclicker.utils.sound import play_beep
 
 class AutoClickerEngine:
@@ -109,6 +109,8 @@ class AutoClickerEngine:
                 # Mouse Click
                 if self.sendinput_mode and IS_WINDOWS:
                     perform_sendinput_click(c_type, hold_duration)
+                elif self.sendinput_mode and IS_LINUX:
+                    perform_wayland_click(c_type, hold_duration)
                 else:
                     selected_btn = btn_map.get(c_type, MouseButton.left)
                     self.mouse.press(selected_btn)

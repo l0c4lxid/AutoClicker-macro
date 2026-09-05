@@ -1,30 +1,35 @@
 # Maintainer: l0c4lxid <syaidxandhika@gmail.com>
-pkgname=stealth-clicker-pro-git
-pkgver=3.1.0
+pkgname=stealth-clicker-pro
+pkgver=3.2.0
 pkgrel=1
 pkgdesc="Modern Cyberpunk Cross-Platform Auto Clicker with Anti-Cheat Evasion"
 arch=('x86_64')
 url="https://github.com/l0c4lxid/AutoClicker-macro"
 license=('MIT')
-depends=('python' 'python-pynput' 'tk' 'xdotool')
-makedepends=('git' 'python-pillow' 'pyinstaller')
+depends=('python' 'python-pynput' 'tk' 'xdotool' 'ydotool')
+makedepends=('python-pillow' 'pyinstaller')
 provides=('stealth-clicker-pro')
-conflicts=('stealth-clicker-pro')
-source=("git+https://github.com/l0c4lxid/AutoClicker-macro.git")
-sha256sums=('SKIP')
-
-pkgver() {
-  cd "$srcdir/AutoClicker-macro"
-  printf "3.1.0.r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
-}
+conflicts=('stealth-clicker-pro-git')
 
 build() {
-  cd "$srcdir/AutoClicker-macro"
-  python scripts/build_app.py
+  cd "$startdir"
+  python scripts/generate_assets.py
+
+  pyinstaller \
+    --name=StealthClickerPro \
+    --onefile \
+    --windowed \
+    --add-data=assets:assets \
+    --hidden-import=pynput \
+    --hidden-import=pynput.keyboard._xorg \
+    --hidden-import=pynput.mouse._xorg \
+    --hidden-import=tkinter \
+    --noconfirm --clean \
+    main.py
 }
 
 package() {
-  cd "$srcdir/AutoClicker-macro"
+  cd "$startdir"
 
   # Install binary executable
   install -Dm755 dist/StealthClickerPro "$pkgdir/usr/bin/stealthclickerpro"

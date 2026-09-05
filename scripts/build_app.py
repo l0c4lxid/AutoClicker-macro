@@ -29,7 +29,7 @@ def main():
 
     # 1. Install required packages
     req_file = os.path.join(project_root, "requirements.txt")
-    run_cmd([sys.executable, "-m", "pip", "install", "-r", req_file], "Checking & Installing Dependencies")
+    run_cmd([sys.executable, "-m", "pip", "install", "-r", req_file, "--break-system-packages"], "Checking & Installing Dependencies")
 
     # 2. Generate Icon Assets
     assets_script = os.path.join(script_dir, "generate_assets.py")

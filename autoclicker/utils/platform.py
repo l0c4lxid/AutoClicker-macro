@@ -2,11 +2,10 @@
 import sys
 import os
 import ctypes
+import subprocess
 
 IS_WINDOWS = sys.platform.startswith("win")
 IS_LINUX = sys.platform.startswith("linux")
-
-if IS_WINDOWS:
     from ctypes import wintypes
 
     INPUT_MOUSE = 0
@@ -91,13 +90,19 @@ def perform_sendinput_key(key_str: str, hold_duration: float):
     ctypes.windll.user32.keybd_event(vk, 0, KEYEVENTF_KEYUP, 0)
     return True
 
-def get_asset_path(relative_path: str) -> str:
-    """Gets absolute path to asset, handling PyInstaller bundle path (sys._MEIPASS)."""
-    if hasattr(sys, '_MEIPASS'):
-        base_path = sys._MEIPASS
-    else:
-        base_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
-    return os.path.join(base_path, relative_path)
+def perform_wayland_click(click_type: str, hold_duration: float):
+    """Simulate mouse click on Wayland using ydotool. Returns True on success."""
+    if not IS_LINUX:
+        return False
+    btn_map = {"Left": "1", "Right": "3", "Middle": "2"}
+    btn = btn_map.get(click_type, "1")
+    try:
+        # press
+        subprocess.run(["ydotool", "click", btn, "--delay", str(int(hold_duration*1000))], check=True)
+        return True
+    except Exception:
+        return False
+
 
 def set_window_icon(root):
     """Sets window icon for Tkinter root window if icon exists."""
